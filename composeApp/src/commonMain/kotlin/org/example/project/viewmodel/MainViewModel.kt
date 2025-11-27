@@ -10,6 +10,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import org.example.project.db.MyDatabase
 import org.example.project.di.initKoin
 import org.example.project.model.KtorWeatherAPI
 import org.example.project.model.MainBean
@@ -50,12 +52,30 @@ suspend fun main() {
 
 open class MainViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    val ktorWeatherApi: KtorWeatherAPI
+    val ktorWeatherApi: KtorWeatherAPI,
+    val myDatabase: MyDatabase
 ) : ViewModel() {
     //MutableStateFlow est une donnée observable
     val dataList = MutableStateFlow(emptyList<WeatherBean>())
     val errorMessage = MutableStateFlow("")
     val runInProgress = MutableStateFlow(false)
+
+    private val weatherQueries = myDatabase.weatherStorageQueries
+    private val jsonParser = Json { prettyPrint = true}
+
+    fun save(weatherList: List<WeatherBean>){
+        viewModelScope.launch {
+            weatherQueries.transaction {
+                for (weather in weatherList) {
+                    weatherQueries.insertWeatherBean(
+                        weather.id.toLong(),
+                        jsonParser.encodeToString(weather)
+                    )
+                }
+                println(weatherQueries.selectAllWeatherBean().executeAsList())
+            }
+        }
+    }
 
 
     //init { //Création d'un jeu de donnée au démarrage
@@ -66,12 +86,17 @@ open class MainViewModel(
     open fun loadWeathers(cityName:String) : Job {
         runInProgress.value = true
         errorMessage.value = ""
+        dataList.value = emptyList<WeatherBean>()
 
         val job = viewModelScope.launch(dispatcher) {
             //TODO récupérer des données et les mettre dans dataList
             try{
                 dataList.value = ktorWeatherApi.loadWeathers(cityName)
+                save(dataList.value)
             } catch (e: Exception) {
+                dataList.value = weatherQueries.selectAllWeatherBean().executeAsList().map {
+                    jsonParser.decodeFromString<WeatherBean>( it.json!! )
+                }
                 e.printStackTrace()
                 errorMessage.value = e.message ?: "C KC"
             } finally {

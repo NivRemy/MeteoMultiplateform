@@ -24,11 +24,14 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,61 +61,72 @@ import org.example.project.viewmodel.MainViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel,
     onPictureClick : (WeatherBean)->Unit = {}
 ) {
-    Column (modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        var searchText by rememberSaveable { mutableStateOf("") } //va dans le viewmodel
-        val list by mainViewModel.dataList.collectAsStateWithLifecycle()
-        var errorMessage = mainViewModel.errorMessage.collectAsStateWithLifecycle().value
-        MyError(errorMessage = errorMessage)
-        SearchBar(
-            searchText = searchText,
-            onSearchKeyboard = { mainViewModel.loadWeathers(searchText) },
-            onValueChange  = { searchText = it }
-        )
-        AnimatedVisibility(visible = mainViewModel.runInProgress.collectAsStateWithLifecycle().value){
-            CircularProgressIndicator()
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text("Meteo App")
+                }
+            )
         }
-
-        WeatherGallery(modifier = Modifier.weight(1f), list, onPictureClick)
-        /*LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(list.size) {
-                PictureRowItem(Modifier, list[it], onPictureClick)
+    ){
+        Column (modifier = modifier.fillMaxSize().padding(it), horizontalAlignment = Alignment.CenterHorizontally) {
+            var searchText by rememberSaveable { mutableStateOf("") } //va dans le viewmodel
+            val list by mainViewModel.dataList.collectAsStateWithLifecycle()
+            var errorMessage = mainViewModel.errorMessage.collectAsStateWithLifecycle().value
+            MyError(errorMessage = errorMessage)
+            SearchBar(
+                searchText = searchText,
+                onSearchKeyboard = { mainViewModel.loadWeathers(searchText) },
+                onValueChange  = { searchText = it }
+            )
+            AnimatedVisibility(visible = mainViewModel.runInProgress.collectAsStateWithLifecycle().value){
+                CircularProgressIndicator()
             }
-        }*/
-        Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-            Button(
-                onClick = { searchText = "" },
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+
+            WeatherGallery(modifier = Modifier.weight(1f), list, onPictureClick)
+            /*LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                items(list.size) {
+                    PictureRowItem(Modifier, list[it], onPictureClick)
+                }
+            }*/
+            Row (modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
+                Button(
+                    onClick = { searchText = "" },
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+
+                    ) {
+                    Icon(
+                        Icons.Filled.Clear,
+                        contentDescription = "Localized description",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text(stringResource(Res.string.clear_btn))
+                }
+                Button(
+                    onClick = { mainViewModel.loadWeathers(searchText) },
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
 
                 ) {
-                Icon(
-                    Icons.Filled.Clear,
-                    contentDescription = "Localized description",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(stringResource(Res.string.clear_btn))
+                    Icon(
+                        Icons.Filled.PlayArrow,
+                        contentDescription = "Localized description",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text(stringResource(Res.string.load_data_btn))
+                }
             }
-            Button(
-                onClick = { mainViewModel.loadWeathers(searchText) },
-                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
 
-            ) {
-                Icon(
-                    Icons.Filled.PlayArrow,
-                    contentDescription = "Localized description",
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(stringResource(Res.string.load_data_btn))
-            }
         }
-
     }
 }
 

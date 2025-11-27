@@ -12,7 +12,6 @@ import org.example.project.ui.screens.PictureRowItem
 actual fun WeatherGallery(modifier: Modifier, urlList: List<WeatherBean>, onPictureClick : (WeatherBean)->Unit) {
     LazyRow(modifier = modifier){
         items(urlList.size) {
-            Text(modifier = Modifier, text = "Hello from AndroidMain")
             PictureRowItem(Modifier, urlList[it], onPictureClick)
         }
     }

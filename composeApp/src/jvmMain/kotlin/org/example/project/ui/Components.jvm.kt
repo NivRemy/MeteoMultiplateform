@@ -16,7 +16,6 @@ actual fun WeatherGallery(
 ) {
     LazyColumn(modifier = modifier){
         items(urlList.size) {
-            Text(modifier = Modifier, text = "Hello from JvmMain")
             PictureRowItem(Modifier, urlList[it], onPictureClick)
         }
     }

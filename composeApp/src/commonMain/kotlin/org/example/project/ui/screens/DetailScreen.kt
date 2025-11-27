@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,40 +39,47 @@ fun DetailScreen(weatherBean: WeatherBean,
                  modifier: Modifier = Modifier,
                  onBackButtonClick: ()->Unit = {}
 ) {
-    Column (modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(weatherBean.name )
-        Row (modifier = modifier
-            .padding(5.dp)
-            .background(Color.Blue)
-            .fillMaxWidth()) {
-            AsyncImage(
-                model = weatherBean.weather.first().icon,
-                //Pour aller le chercher dans string.xml R de votre package com.nom.projet
-                //contentDescription = getString(R.string.picture_of_cat),
-                //En dur
-                contentDescription = "Icone de la ville",
-                contentScale = ContentScale.FillWidth,
-                //placeholder = painterResource(R.mipmap.ic_launcher),
-                //error = painterResource(R.mipmap.ic_launcher),
-                onError = { println(it) },
-                modifier = Modifier
-                    .heightIn(max = 100.dp)
-                    .widthIn(max = 100.dp)
-            )
-        }
-        Text(weatherBean.getResume())
-        Button(
-            onClick = { onBackButtonClick() },
-            contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-
+    Scaffold {
+        Column(
+            modifier = modifier.fillMaxWidth().padding(it),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(weatherBean.name)
+            Row(
+                modifier = modifier
+                    .padding(5.dp)
+                    .background(Color.Blue)
+                    .fillMaxWidth()
             ) {
-            Icon(
-                Icons.Filled.PlayArrow,
-                contentDescription = "Back button",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
-            )
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(stringResource(Res.string.back_btn))
+                AsyncImage(
+                    model = weatherBean.weather.first().icon,
+                    //Pour aller le chercher dans string.xml R de votre package com.nom.projet
+                    //contentDescription = getString(R.string.picture_of_cat),
+                    //En dur
+                    contentDescription = "Icone de la ville",
+                    contentScale = ContentScale.FillWidth,
+                    //placeholder = painterResource(R.mipmap.ic_launcher),
+                    //error = painterResource(R.mipmap.ic_launcher),
+                    onError = { println(it) },
+                    modifier = Modifier
+                        .heightIn(max = 100.dp)
+                        .widthIn(max = 100.dp)
+                )
+            }
+            Text(weatherBean.getResume())
+            Button(
+                onClick = { onBackButtonClick() },
+                contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+
+                ) {
+                Icon(
+                    Icons.Filled.PlayArrow,
+                    contentDescription = "Back button",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Text(stringResource(Res.string.back_btn))
+            }
         }
     }
 }
