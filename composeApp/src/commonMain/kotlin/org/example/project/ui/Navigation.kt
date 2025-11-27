@@ -42,7 +42,12 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             //val mainViewModel : MainViewModel = viewModel()
 
             //on peut passer le navHostController à un écran s'il déclenche des navigations
-            SearchScreen( mainViewModel = mainViewModel, onPictureClick = {navHostController.navigate(Routes.DetailRoute(it.id))} )
+            SearchScreen(
+                mainViewModel = mainViewModel,
+                showBackArrow = navHostController.previousBackStackEntry!=null,
+                onBackArrowClic = {navHostController.popBackStack()},
+                onPictureClick = {navHostController.navigate(Routes.DetailRoute(it.id))}
+            )
         }
 
         //Route 2 vers un écran de détail
@@ -52,6 +57,8 @@ fun AppNavigation(modifier: Modifier = Modifier) {
 
             DetailScreen(
                 weatherBean = weatherBean,
+                showBackArrow = navHostController.previousBackStackEntry!=null,
+                onBackArrowClic = {navHostController.popBackStack()},
                 onBackButtonClick = {navHostController.popBackStack()}
             )
         }

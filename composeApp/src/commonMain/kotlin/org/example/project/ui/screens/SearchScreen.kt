@@ -18,7 +18,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -26,12 +29,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -66,6 +71,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SearchScreen(
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel,
+    showBackArrow: Boolean = false,
+    onBackArrowClic : () -> Unit = {},
     onPictureClick : (WeatherBean)->Unit = {}
 ) {
     Scaffold (
@@ -73,6 +80,30 @@ fun SearchScreen(
             TopAppBar(
                 title = {
                     Text("Meteo App")
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+                navigationIcon = {
+                    if (showBackArrow) {
+                        IconButton(onClick = onBackArrowClic) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                                tint =  MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {} ){
+                        Icon(
+                            Icons.Filled.LocationOn,
+                            contentDescription = "Location",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
                 }
             )
         }

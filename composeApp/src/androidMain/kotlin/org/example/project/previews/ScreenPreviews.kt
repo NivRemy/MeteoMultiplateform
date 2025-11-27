@@ -14,12 +14,14 @@ import org.example.project.model.MainBean
 import org.example.project.model.WeatherBean
 import org.example.project.model.WeatherDescriptionBean
 import org.example.project.model.WindBean
+import org.example.project.model.databaseModule
 import org.example.project.ui.screens.DetailScreen
 import org.example.project.ui.screens.SearchScreen
 import org.example.project.ui.theme.AppTheme
 import org.example.project.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplicationPreview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Preview(showBackground = true, showSystemUi = true, locale = "fr",
     uiMode = android.content.res.Configuration.UI_MODE_TYPE_NORMAL or android.content.res.Configuration.UI_MODE_TYPE_NORMAL)
@@ -33,11 +35,11 @@ fun SearchScreenPreview() {
     KoinApplicationPreview(
         application = {
             androidContext(context)
-            modules(apiModule, viewModelModule)
+            modules(apiModule, viewModelModule,databaseModule())
         }
     ) {
         AppTheme {
-            val mainViewModel: MainViewModel = viewModel()
+            val mainViewModel: MainViewModel = koinViewModel()
             mainViewModel.loadFakeData(runInProgress = true, errorMessage = "Une erreur")
             SearchScreen(mainViewModel = mainViewModel)
         }
@@ -54,11 +56,11 @@ fun DetailScreenPreview() {
     KoinApplicationPreview(
         application = {
             androidContext(context)
-            modules(apiModule, viewModelModule)
+            modules(apiModule, viewModelModule, databaseModule())
         }
     ) {
         AppTheme {
-            val mainViewModel: MainViewModel = viewModel()
+            val mainViewModel: MainViewModel = koinViewModel()
             DetailScreen(
                 //jeu de donnée pour la Preview
                 weatherBean = WeatherBean(

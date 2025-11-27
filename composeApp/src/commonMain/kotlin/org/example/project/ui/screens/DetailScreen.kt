@@ -11,12 +11,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,12 +41,41 @@ import org.example.project.model.WeatherBean
 import org.example.project.viewmodel.MainViewModel
 import org.jetbrains.compose.resources.stringResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(weatherBean: WeatherBean,
                  modifier: Modifier = Modifier,
+                 showBackArrow: Boolean = true,
+                 onBackArrowClic : () -> Unit = {},
                  onBackButtonClick: ()->Unit = {}
 ) {
-    Scaffold {
+
+
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                navigationIcon = {
+                    if (showBackArrow) {
+                        IconButton(onClick = onBackArrowClic) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                                tint =  MaterialTheme.colorScheme.onPrimary
+
+                            )
+                        }
+                    }
+                },
+                title = {
+                    Text("Meteo App")
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            )
+        }
+    ){
         Column(
             modifier = modifier.fillMaxWidth().padding(it),
             horizontalAlignment = Alignment.CenterHorizontally

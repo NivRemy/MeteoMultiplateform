@@ -138,8 +138,16 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.example.project"
+            packageName = "meteoApp"
             packageVersion = "1.0.0"
+            windows{
+                shortcut = true
+                menu = true
+            }
+        }
+
+        dependencies {
+            runtimeOnly("app.cash.sqldelight:native-driver:2.1.0")
         }
     }
 }
