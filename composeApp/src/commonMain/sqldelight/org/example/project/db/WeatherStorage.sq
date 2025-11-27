@@ -1,0 +1,35 @@
+CREATE TABLE weather_bean  (
+    id integer,
+    json TEXT
+);
+
+
+-- Insertion d'un nouveau photographer
+insertWeatherBean:
+INSERT INTO weather_bean(id, json)
+VALUES (?, ?);
+
+insertOrReplaceWeatherBean:
+INSERT OR REPLACE INTO weather_bean(id, json)
+VALUES (?, ?);
+
+-- Sélection d'un photographer par son id
+selectWeatherBeanById:
+SELECT * FROM weather_bean WHERE id = ?;
+
+-- Sélection de tous les WeatherBean
+selectAllWeatherBean:
+SELECT * FROM weather_bean;
+
+-- Mise à jour d'un WeatherBean
+updateWeatherBean:
+UPDATE weather_bean
+SET json = ?
+WHERE id = ?;
+
+-- Suppression d'un WeatherBean
+deleteWeatherBean:
+DELETE FROM weather_bean WHERE id = ?;
+
+deleteAll:
+DELETE FROM weather_bean;

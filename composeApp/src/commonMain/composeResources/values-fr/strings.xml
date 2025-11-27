@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Meteo</string>
+    <string name="clear_btn">Réinitialiser</string>
+    <string name="load_data_btn">Charger</string>
+    <string name="back_btn">Retour</string>
+</resources>
