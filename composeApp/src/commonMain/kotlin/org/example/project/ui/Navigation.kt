@@ -16,7 +16,7 @@ import org.example.project.viewmodel.MainViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 class Routes {
-    @kotlinx.serialization.Serializable
+    @Serializable
     data object SearchRoute
 
     //les paramètres ne peuvent être que des types de base(String, Int, Double...)

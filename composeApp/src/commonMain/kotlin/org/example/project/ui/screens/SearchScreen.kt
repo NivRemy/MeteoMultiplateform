@@ -66,7 +66,7 @@ fun SearchScreen(
 ) {
     Column (modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         var searchText by rememberSaveable { mutableStateOf("") } //va dans le viewmodel
-        var list = mainViewModel.dataList.collectAsStateWithLifecycle().value
+        val list by mainViewModel.dataList.collectAsStateWithLifecycle()
         var errorMessage = mainViewModel.errorMessage.collectAsStateWithLifecycle().value
         MyError(errorMessage = errorMessage)
         SearchBar(

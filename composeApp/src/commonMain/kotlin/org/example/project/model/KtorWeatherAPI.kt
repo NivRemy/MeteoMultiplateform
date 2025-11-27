@@ -9,11 +9,13 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.example.project.di.initKoin
 
 suspend fun main() {
-    /*val list : List<WeatherBean> = KtorWeatherAPI.loadWeathers("Nice")
+    val api = initKoin().koin.get<KtorWeatherAPI>()
+    val list : List<WeatherBean> = api.loadWeathers("Nice")
     println(list.forEach { println(it.getResume()) })
-    KtorWeatherAPI.close()*/
+    api.close()
 }
 
 class KtorWeatherAPI (val client: HttpClient) {
@@ -36,7 +38,7 @@ class KtorWeatherAPI (val client: HttpClient) {
         if (name.length < 3 ){
             throw Exception("City name must be at least 3 characters")
         }
-        delay(2000)
+
         return client.get(API_URL + "find?q=$name&appid=b80967f0a6bd10d23e44848547b26550&units=metric&lang=fr"){
 //            headers {
 //                append("Authorization", "Bearer YOUR_TOKEN")

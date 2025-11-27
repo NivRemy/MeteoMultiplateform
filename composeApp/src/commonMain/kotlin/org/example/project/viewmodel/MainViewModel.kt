@@ -2,6 +2,7 @@ package org.example.project.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import org.example.project.di.initKoin
 import org.example.project.model.KtorWeatherAPI
 import org.example.project.model.MainBean
 import org.example.project.model.WeatherBean
@@ -34,7 +36,7 @@ import org.example.project.model.WindBean
 //}
 
 suspend fun main() {
-    /*val viewModel = MainViewModel()
+    val viewModel = initKoin().koin.get<MainViewModel>()
     viewModel.loadWeathers("")
     //viewModel.loadWeathers("Paris")
     //attente
@@ -43,7 +45,7 @@ suspend fun main() {
     }
     //Affichage de la liste et du message d'erreur
     println("List : ${viewModel.dataList.value}" )
-    println("ErrorMessage : ${viewModel.errorMessage.value}" )*/
+    println("ErrorMessage : ${viewModel.errorMessage.value}" )
 }
 
 open class MainViewModel(
