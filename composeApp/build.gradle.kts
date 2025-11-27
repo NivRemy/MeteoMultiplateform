@@ -147,7 +147,7 @@ compose.desktop {
         }
 
         dependencies {
-            runtimeOnly("app.cash.sqldelight:native-driver:2.1.0")
+            runtimeOnly("app.cash.sqldelight:sqlite-driver:2.1.0")
         }
     }
 }
